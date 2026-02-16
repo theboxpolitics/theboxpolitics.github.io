@@ -1,9 +1,16 @@
 {
   "siteName": "The Box",
   "slogan": "POLITICS UNBOXED. LEADERS CULTIVATED.",
-  "founderName": "Bernie Sanders",
-  "founderRole": "CMO",
-  "founderBio": "I am once again asking for you to follow @boxpolitics.",
+  "founderName": "Jaz Tulsi",
+  "founderRole": "Founder",
+  "founderBio": "",
   "email": "theboxpolitics.business@gmail.com",
-  "instagram": "https://instagram.com/boxpolitics"
+  "instagram": "https://instagram.com/theboxpolitics",
+  "colors": {
+    "primary": "#674736",
+    "accent": "#ECC398",
+    "bg": "#F5DDC4",
+    "secondary": "#DAC4AD",
+    "white": "#FFFFFF"
+  }
 }

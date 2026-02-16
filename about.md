@@ -1,5 +1,3 @@
 # THE MISSION
 
-The Box Politics is a radical response to the silence of our generation. We are a non-profit organization dedicated to dismantling the barriers between young citizens and the political machinery that governs their lives. By focusing on direct engagement and modern knowledge distribution, we turn spectators into stakeholders.
-
-We believe that when youth are informed, they are dangerous to the status quo. Our platform serves as a modern printing press—using events, social media, and open-source knowledge to bridge the gap.
+Our nonprofit organization is dedicated to promoting civic engagement and political awareness within our community. We focus on educating individuals about government systems, public policies, and the importance of active participation in political processes. Through workshops, informational content, and community initiatives, we aim to empower people to understand their rights, stay informed on political issues, and take meaningful action in their communities. Our goal is to build a thoroughly informed, responsible, and engaged society.

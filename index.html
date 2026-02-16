@@ -9,12 +9,13 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <style>
         :root {
-            --bg: #0a0a0a;
-            --text: #e0e0e0;
-            --accent: #ffffff;
+            --bg: #F5DDC4;
+            --text: #62401E;
+            --accent: #ECC398;
+            --secondary: #DAC4AD;
+            --white: #FFFFFF;
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -32,28 +33,17 @@
             line-height: 1.6;
         }
 
-        /* Nav */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             cursor: pointer;
         }
 
         .logo-img {
-            height: 40px;
+            height: 45px;
             width: auto;
+            object-fit: contain;
         }
 
         .logo-text {
@@ -61,66 +51,112 @@
             font-weight: 900;
             font-size: 1.4rem;
             text-transform: uppercase;
+            color: var(--text);
         }
 
+        /* Menu Button */
         .menu-btn {
             cursor: pointer;
-            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 7px;
             z-index: 1001;
         }
 
         .menu-btn span {
             display: block;
-            width: 35px;
-            height: 1px;
-            background: var(--accent);
+            width: 30px;
+            height: 2px;
+            background: var(--text);
             transition: var(--transition);
         }
 
-        /* Overlay */
         #menu-overlay {
             position: fixed;
-            top: 0;
+            top: 80px;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(15px);
+            height: calc(100% - 80px);
+
+            /* We'll set the actual color in JS, but this ensures blur works */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
+
             opacity: 0;
             visibility: hidden;
+            transform: translateY(-10px);
             transition: var(--transition);
         }
 
         #menu-overlay.open {
             opacity: 1;
+            /* Keep this at 1 so text is solid */
             visibility: visible;
+            transform: translateY(0);
         }
 
         .menu-link {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 8vw, 4rem);
-            color: var(--text);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            color: var(--white);
+            /* This makes the links solid white */
             text-decoration: none;
             margin: 1rem 0;
             transition: var(--transition);
-            border-bottom: 2px solid transparent;
+            opacity: 1 !important;
+            /* Forces text to stay opaque */
         }
 
         .menu-link:hover {
-            opacity: 0.7;
+            color: var(--accent);
             transform: translateY(-5px);
-            border-bottom: 2px solid var(--accent);
         }
 
-        /* Sections */
+        /* Ensure the Nav bar stays on top and has a solid background */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            /* Fixed height to match the overlay offset */
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1001;
+            background-color: var(--bg);
+            /* Keep the header area Cream */
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        /* Menu Button behavior */
+        .menu-btn {
+            position: relative;
+            z-index: 1002;
+            cursor: pointer;
+        }
+
+        /* Animation: Turn the lines into an X when open */
+        .menu-btn span {
+            color: var(--accent);
+        }
+
+        .open-btn span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .open-btn span:nth-child(2) {
+            transform: translateY(-2px) rotate(-45deg);
+        }
+
+
+        /* Layout Content */
         #content {
             transition: opacity 0.4s ease;
         }
@@ -129,7 +165,7 @@
             opacity: 0;
         }
 
-        /* Home */
+        /* Home View (Centered Hero) */
         .hero {
             height: 100vh;
             width: 100%;
@@ -143,39 +179,37 @@
 
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3.5rem, 12vw, 8rem);
+            font-size: clamp(3rem, 12vw, 8rem);
             font-weight: 900;
             text-transform: uppercase;
-            line-height: 0.9;
+            border-bottom: 4px solid var(--text);
             margin-bottom: 1.5rem;
-            border-bottom: 3px solid var(--accent);
         }
 
         .hero h3 {
-            font-size: clamp(0.8rem, 2vw, 1.2rem);
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            font-weight: 300;
+            font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+            letter-spacing: 5px;
             opacity: 0.8;
+            font-weight: 300;
         }
 
-        /* Article/About */
+        /* Article View (Scrollable) */
         .article {
-            max-width: 850px;
+            max-width: 800px;
             margin: 150px auto 100px;
             padding: 0 2rem;
         }
 
         .article h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            margin-bottom: 3rem;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 2rem;
         }
 
         .article hr {
             border: none;
             height: 1px;
-            background: #333;
+            background: var(--secondary);
             margin: 80px 0;
         }
 
@@ -187,126 +221,91 @@
         }
 
         .founder-img {
-            width: 250px;
-            height: 300px;
+            width: 220px;
+            height: 220px;
             object-fit: cover;
-            filter: grayscale(100%);
-            border: 1px solid #333;
+            border: 1px solid var(--secondary);
         }
 
         @media (max-width: 768px) {
             .founder-card {
                 flex-direction: column;
-                text-align: left;
+            }
+
+            .logo-text {
+                display: none;
             }
         }
     </style>
 </head>
 
 <body>
-
     <nav>
         <div class="logo-container" onclick="loadPage('home')">
-            <img src="logo.png" alt=" " class="logo-img">
-            <span class="logo-text" id="dynamic-site-name"></span>
+            <img src="logo.png" alt="Logo" class="logo-img">
+            <span class="logo-text" id="site-title"></span>
         </div>
-        <div class="menu-btn" onclick="toggleMenu(event)">
-            <span></span><span></span>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
     </nav>
-
-    <div id="menu-overlay" onclick="toggleMenu(event)">
+    <div id="menu-overlay" onclick="toggleMenu()">
         <a href="#" class="menu-link" onclick="loadPage('home')">Front Page</a>
         <a href="#" class="menu-link" onclick="loadPage('about')">The Mission</a>
         <a href="#" class="menu-link" onclick="loadPage('socials')">Socials</a>
     </div>
-
     <main id="content"></main>
 
     <script>
-        let siteConfig = {};
-
-        // Fetch the config once when site starts
+        let config = {};
         async function init() {
             try {
                 const response = await fetch('config.json');
-                siteConfig = await response.json();
-                document.getElementById('dynamic-site-name').innerText = siteConfig.siteName;
+                config = await response.json();
+
+                const root = document.documentElement;
+                const colors = config.colors;
+
+                // Apply standard colors
+                root.style.setProperty('--bg', colors.bg);
+                root.style.setProperty('--text', colors.primary); // Mapping 'primary' to '--text'
+                root.style.setProperty('--accent', colors.accent);
+                root.style.setProperty('--secondary', colors.secondary);
+                root.style.setProperty('--white', colors.white);
+
+                // --- THE TRANSPARENT OVERLAY LOGIC ---
+                // Takes #62401E and adds '80' for 50% transparency
+                const transparentPrimary = colors.primary + "DD";
+                const overlay = document.getElementById('menu-overlay');
+                overlay.style.backgroundColor = transparentPrimary;
+                // -------------------------------------
+
+                document.getElementById('site-title').innerText = config.siteName;
                 loadPage('home');
-            } catch (e) { console.error("Config missing", e); }
+            } catch (e) { console.error(e); }
         }
-
-        function toggleMenu(event) {
-            document.getElementById('menu-overlay').classList.toggle('open');
+        function toggleMenu() { document.getElementById('menu-overlay').classList.toggle('open'); }
+        async function loadPage(p) {
+            const c = document.getElementById('content');
+            c.classList.add('fade-out');
+            const res = await fetch(`${p}.md`);
+            const md = await res.text();
+            setTimeout(() => {
+                const html = marked.parse(md);
+                if (p === 'home') {
+                    c.innerHTML = `<section class="hero"><h1>${config.siteName}</h1><h3>${config.slogan}</h3></section>`;
+                    document.body.style.overflow = 'hidden';
+                } else if (p === 'socials') {
+                    const handle = config.instagram.split('/').filter(Boolean).pop();
+                    c.innerHTML = `<section class="article"><h1>CONTACT</h1>${html}<div style="margin-top:50px"><p>EMAIL: <a href="mailto:${config.email}" style="color:inherit; font-weight:bold;">${config.email}</a></p><p>INSTAGRAM: <a href="${config.instagram}" target="_blank" style="color:inherit; font-weight:bold;">@${handle}</a></p></div></section>`;
+                    document.body.style.overflow = 'auto';
+                } else {
+                    c.innerHTML = `<section class="article">${html}<hr><h2>WHO WE ARE</h2><div class="founder-card"><img src="founder.png" class="founder-img"><div><h3>${config.founderName}</h3><p><strong>${config.founderRole}</strong></p><p>${config.founderBio}</p></div></div></section>`;
+                    document.body.style.overflow = 'auto';
+                }
+                c.classList.remove('fade-out');
+            }, 400);
         }
-
-        async function loadPage(page) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.classList.add('fade-out');
-
-            try {
-                // Socials doesn't actually need an MD file if we want it fully dynamic 
-                // but we fetch it anyway to allow for custom text.
-                const response = await fetch(`${page}.md`);
-                const mdText = await response.text();
-
-                setTimeout(() => {
-                    let htmlContent = marked.parse(mdText);
-
-                    if (page === 'home') {
-                        contentDiv.innerHTML = `
-                        <section class="hero">
-                            <h1>${siteConfig.siteName}</h1>
-                            <h3>${siteConfig.slogan}</h3>
-                        </section>`;
-                        document.body.style.overflow = 'hidden';
-                    } else if (page === 'socials') {
-                        const instaLink = siteConfig.instagram.replace(/\/$/, "");
-                        const handle = instaLink.substring(instaLink.lastIndexOf("/") + 1);
-                        contentDiv.innerHTML = `
-                        <section class="article">
-                            <h1>CONNECT</h1>
-                            ${htmlContent}
-                            <div style="margin-top: 50px; font-family: 'Playfair Display', serif;">
-                                <div style="margin-bottom: 30px;">
-                                    <span style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8;">Email:</span>
-                                    <a href="mailto:${siteConfig.email}" class="menu-link" style="font-size: clamp(1.5rem, 5vw, 2.5rem); display: inline-block; margin: 0; border: none; padding-left: 10px;">
-                                        ${siteConfig.email}
-                                    </a>
-                                </div>
-                                
-                                <div>
-                                    <span style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8;">Instagram:</span>
-                                    <a href="${siteConfig.instagram}" target="_blank" class="menu-link" style="font-size: clamp(1.5rem, 5vw, 2.5rem); display: inline-block; margin: 0; border: none; padding-left: 10px;">
-                                        @${handle}
-                                    </a>
-                                </div>
-                            </div>
-                        </section>`;
-                        document.body.style.overflow = 'auto';
-                    } else {
-                        contentDiv.innerHTML = `
-                        <section class="article">
-                            ${htmlContent}
-                            <hr>
-                            <h2>WHO WE ARE</h2>
-                            <div class="founder-card">
-                                <img src="founder.png" class="founder-img" alt="Founder">
-                                <div>
-                                    <h3>${siteConfig.founderName}</h3>
-                                    <p><strong>${siteConfig.founderRole}</strong></p>
-                                    <p>${siteConfig.founderBio}</p>
-                                </div>
-                            </div>
-                        </section>`;
-                        document.body.style.overflow = 'auto';
-                    }
-                    contentDiv.classList.remove('fade-out');
-                    window.scrollTo(0, 0);
-                }, 400);
-            } catch (err) { console.error(err); }
-        }
-
         init();
     </script>
 </body>
